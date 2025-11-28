@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>"Strange Tales from a Chinese Studio"- VR Immersion Series"Niexiaoqian"- Colortab's work</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', 'SimHei', sans-serif;
+        }
+        
+        body {
+            background-color: #545458;
+            color: #767676;
+            line-height: 1.6;
+            background-image: linear-gradient(to bottom, #1a1a2e, #16213e);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 4px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 40px;
+            transition: all 0.5s ease;
+        }
+        
+        header h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #907abd;
+            text-shadow: 0 0 12px rgba(160, 80, 120, 0.5);
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            color: #68adb6;
+        }
+        
+        .games-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .game-card {
+            background: rgba(30, 30, 46, 0.8);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+        }
+        
+        .game-title {
+            color: #c6bcd0;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            text-align: center;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(233, 69, 96, 0.3);
+        }
+        
+        .game-image-container {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            border: 2px solid transparent;
+            animation: border-glow 2s infinite;
+        }
+        
+        .game-image {
+            width: 100%;
+            height: 200px;
+            background: #AAAOCD;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #dfe6ff;
+            font-size: 1.1rem;
+            overflow: hidden;
+        }
+        
+        .game-image img,
+        .square-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 0.8s ease, transform 0.3s;
+        }
+        
+        .game-image img.loaded,
+        .square-image img.loaded {
+            opacity: 1;
+        }
+        
+        .game-image-container:hover .game-image img {
+            transform: scale(1.05);
+        }
+        
+        @keyframes border-glow {
+            0%, 100% {
+                border-color: rgba(160, 140, 190, 0.7);
+                box-shadow: 0 0 5px rgba(0, 255, 255, 0.5), 
+                            inset 0 0 10px rgba(0, 255, 255, 0.3);
+            }
+            50% {
+                border-color: rgba(0, 180, 158, 1);
+                box-shadow: 0 0 15px rgba(255, 105, 180, 0.8),
+                           inset 0 0 15px rgba(0, 255, 200, 1);
+            }
+        }
+        
+        .poem-container {
+            background-color: rgb(100, 94, 138);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .poem-container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(to right, #907abd, #3a2252, #907abd);
+        }
+        
+        .poem-text {
+            color: #a1d0bc;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            text-align: center;
+            font-weight: 500;
+        }
+        
+        .poem-title {
+            color: #95c8b2;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .square-images {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+            gap: 10px;
+        }
+        
+        .square-image {
+            width: 32%;
+            aspect-ratio: 1/1;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #626466;
+        }
+        
+        .game-links {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 18px;
+        }
+        
+        .game-link {
+            display: inline-block;
+            padding: 4px 15px;
+            background: #30314a;
+            color: #745882;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s;
+            text-align: center;
+            flex: 1;
+            margin:0 2px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .game-link:hover {
+            background: #ffc000;
+            color: #30314a;
+        }
+
+        .docs-section {
+            background-color: #1e293b;
+            padding: 2rem;
+            border-radius: 8px;
+            margin: 6rem auto;
+            max-width: 2000px;
+            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.2);
+        }
+        
+        .docs-title {
+            text-align: center;
+            color: #d8b4fe;
+            margin-top: 0;
+        }
+        
+        .docs-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 3fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+            justify-items: center;
+        }
+        
+        .doc-link-btn {
+            background-color: #334155;
+            color: #c4b5fd;
+            text-decoration: none;
+            padding: 1rem;
+            border-radius: 4px;
+            text-align: center;
+            transition: background-color 0.3s ease;
+            border: 1px solid #7c3aed;
+        }
+        
+        .doc-link-btn:hover {
+            background-color: #475569;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 40px;
+            color: #7977c5;
+            font-size: 0.9rem;
+        }
+        
+        .beian {
+            margin-top: 15px;
+            color: #658c8a;
+        }
+        
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.3);
+            transform: scale(0);
+            animation: ripple-animation 0.6s linear;
+        }
+        
+        @keyframes ripple-animation {
+            to {
+                transform: scale(2.5);
+                opacity: 0;
+            }
+        }
+        
+        @media (max-width: 1024px) {
+            .games-container {
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 25px;
+            }
+            
+            .game-card {
+                padding: 20px;
+            }
+            
+            .game-title {
+                font-size: 1.5rem;
+            }
+            
+            .poem-container {
+                padding: 12px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            header {
+                padding: 30px 0;
+                margin-bottom: 30px;
+            }
+            
+            header h1 {
+                font-size: 1.8rem;
+                margin-bottom: 15px;
+            }
+            
+            header p {
+                font-size: 1.1rem;
+            }
+            
+            .games-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                margin-bottom: 40px;
+            }
+            
+            .game-card {
+                padding: 20px;
+            }
+            
+            .game-title {
+                font-size: 1.5rem;
+            }
+            
+            .game-image {
+                height: 180px;
+            }
+            
+            .square-images {
+                flex-direction: row;
+                overflow-x: auto;
+                padding-bottom: 10px;
+                gap: 8px;
+                margin: 15px 0;
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            .square-images::-webkit-scrollbar {
+                height: 3px;
+            }
+            
+            .square-images::-webkit-scrollbar-thumb {
+                background: #523a62;
+                border-radius: 2px;
+            }
+            
+            .square-image {
+                min-width: 100px;
+                flex: 0 0 auto;
+            }
+            
+            .game-links {
+                justify-content: space-between;
+                gap: 10px;
+                margin-top: 15px;
+            }
+            
+            .game-link {
+                margin: 0;
+                padding: 8px 16px;
+            }
+            
+            footer {
+                padding: 20px 0;
+                margin-top: 30px;
+            }
+            
+            .poem-container {
+                padding: 10px;
+            }
+            
+            .poem-text {
+                font-size: 0.9rem;
+            }
+            
+            .poem-title {
+                font-size: 1rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 1.6rem;
+            }
+            
+            .game-card {
+                padding: 15px;
+            }
+            
+            .game-title {
+                font-size: 1.4rem;
+            }
+            
+            .game-image {
+                height: 160px;
+            }
+            
+            .square-image {
+                min-width: 90px;
+            }
+            
+            .poem-container {
+                padding: 8px;
+            }
+            
+            .poem-text {
+                font-size: 0.85rem;
+            }
+            
+            .poem-title {
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>"Strange Tales from a Chinese Studio" - Immersive VR</h1>
+            <p>Creator Developer：colortab</p>
+        </header>
+        
+        <div class="games-container">
+            <div class="game-card">
+                <h2 class="game-title">Gorgeous Ghost1</h2>
+                
+                <a href="video01.html" style="display: block; text-decoration: none;">
+                    <div class="game-image-container">
+                        <div class="game-image">
+                            <img data-src="images/GG01A.jpg" alt="魂倩梦绕游戏图片" class="lazy-load">
+                        </div>
+                    </div>
+                </a>
+                
+                <div class="poem-container">
+                    <div class="poem-title">Thoughts in dreams</div>
+                    <div class="poem-text">
+                        For five hundred years, I’ve waited in dreams, bitter and long,<br>
+                        As frost veils the ten-li lake beneath the boundless sky.<br>
+                        I covet not the swan’s lofty, cloud-kissing flight,<br>
+                        But grieve for fleeting youth, as raven locks fade and die.<br>
+                        By the moon I stand, lone, yearning for your tender care,<br>
+                        My only wish—to hold your hand, and share the moon’s soft glow.<br>
+                        Through endless lives, I pray to cling to this one prayer:<br>
+                        I envy not the immortals, but mandarin ducks, side by side, slow.
+                    </div>
+                </div>
+                
+                <div class="square-images">
+                    <div class="square-image">
+                        <img data-src="images/GG01B.jpg" alt="魂倩梦绕截图1" class="lazy-load">
+                    </div>
+                    <div class="square-image">
+                        <img data-src="images/GG01C.png" alt="魂倩梦绕截图2" class="lazy-load">
+                    </div>
+                    <div class="square-image">
+                        <img data-src="images/GG01D.png" alt="魂倩梦绕截图3" class="lazy-load">
+                    </div>
+                </div>
+                
+                <p>"Lost in intoxication, not knowing the way home" stepping into "Strange Tales ", the mundane world's hustle and bustle and the misty haze of the netherworld are entangled in fine pieces. Lanruo Temple happens to meet for the first time, and together they brave the perilous situation.</p>
+                
+                <div class="game-links">
+                    <a href="Three/privacy-policy1.html" class="game-link ripple-btn">GG1PrivacyPolicy</a>
+                    <a href="Three/user-agreement1.html" class="game-link ripple-btn">GG1UserAgreement</a>
+                </div>
+            </div>
+            
+            <div class="game-card">
+                <h2 class="game-title">Gorgeous Ghost2</h2>
+                
+                <a href="video02.html" style="display: block; text-decoration: none;">
+                    <div class="game-image-container">
+                        <div class="game-image">
+                            <img data-src="images/GG02A.jpg" alt="倩在南逢游戏图片" class="lazy-load">
+                        </div>
+                    </div>
+                </a>
+                
+                <div class="poem-container">
+                    <div class="poem-title">Ancient temple love</div>
+                    <div class="poem-text">
+                        The ancient temple's bell winds 'round the slanting sun;<br>
+                        Old locust, frost-grass catch the sound.<br>
+                        Cold crows rouse the sorrow of the parted one—<br>
+                        Yearning to rise, no path’s won.<br>
+                        Fallen flowers sink in water, hiding care;<br>
+                        A lonely shadow stands by lonely light.<br>
+                        Though a thousand thoughts fill the mortal sphere,<br>
+                        Love beyond life and death spans endless years.
+                    </div>
+                </div>
+                
+                <div class="square-images">
+                    <div class="square-image">
+                        <img data-src="images/GG02B.jpg" alt="倩在南逢截图1" class="lazy-load">
+                    </div>
+                    <div class="square-image">
+                        <img data-src="images/GG02C.png" alt="倩在南逢截图2" class="lazy-load">
+                    </div>
+                    <div class="square-image">
+                        <img data-src="images/GG02D.png" alt="倩在南逢截图3" class="lazy-load">
+                    </div>
+                </div>
+                
+                <p>When mortal and ghost are bound by different paths,Her temples damp with dew, shyness lingers like a dream."Our meeting feels but a fleeting vision"—She sits alone, sorrowful, facing the candle flame.Wind chimes outside the window whisper 'round the eaves,She stretches out her hand to grasp the starry clouds.</p>
+                
+                <div class="game-links">
+                    <a href="Three/privacy-policy2.html" class="game-link ripple-btn">GG2PrivacyPolicy</a>
+                    <a href="Three/user-agreement2.html" class="game-link ripple-btn">GG2UserAgreement</a>
+                </div>
+            </div>
+            
+            <div class="game-card">
+                <h2 class="game-title">Gorgeous Ghost3</h2>
+                
+                <a href="video03.html" style="display: block; text-decoration: none;">
+                    <div class="game-image-container">
+                        <div class="game-image">
+                            <img data-src="images/GG03A.jpg" alt="倩因后果游戏图片" class="lazy-load">
+                        </div>
+                    </div>
+                </a>
+                
+                <div class="poem-container">
+                    <div class="poem-title">Immortal Journey</div>
+                    <div class="poem-text">
+                        The dark robe sweeps off snow from a thousand peaks; <br>
+                        cloud-like sleeves flutter 'cross ten thousand moons and weeks.<br>
+                        Steadfast Dao spirit shines o'er the Silver River bright; <br>
+                        solemn Dharma seal guards the eight wastelands with might.<br>
+                        Heaven and Earth divide yin and yang, pure from impure; <br>
+                        sword qi cleaves through evil spirits, fierce and sure.<br>
+                        Only when drunk do I know immortal wine's fierce glow;<br>
+                        treading wind, rich fragrance lingers in the three realms below.
+                    </div>
+                </div>
+                
+                <div class="square-images">
+                    <div class="square-image">
+                        <img data-src="images/GG03A.png" alt="倩因后果截图1" class="lazy-load">
+                    </div>
+                    <div class="square-image">
+                        <img data-src="images/GG03B.jpg" alt="倩因后果截图2" class="lazy-load">
+                    </div>
+                    <div class="square-image">
+                        <img data-src="images/GG03D.png" alt="倩因后果截图3" class="lazy-load">
+                    </div>
+                </div>
+                
+                <p>The clouds drift like fluttering robes—We but brush the divide 'twixt yin and yang, gazing at each other from afar."Parting and meeting, our hearts cling still"A faint sorrow lingers in the breast.Evil succumbs to good, yet good dreads evil too;Victory or defeat lies in heaven’s will.</p>
+                
+                <div class="game-links">
+                    <a href="Three/privacy-policy3.html" class="game-link ripple-btn">GG3PrivacyPolicy</a>
+                    <a href="Three/user-agreement3.html" class="game-link ripple-btn">GG3UserAgreement</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="docs-section">
+            <div class="docs-links">
+                <a href="GG/privacy-policy.html" class="doc-link-btn">GGPrivacyPolicy</a>
+                <a href="GG/user-agreement.html" class="doc-link-btn">GGUserAgreement</a>
+                <a href="Ed/EDprivacy-policy.html" class="doc-link-btn">EDUserAgreement</a>
+                <a href="Ed/EDuser-agreement.html" class="doc-link-btn">EDPrivacyPolicy</a>
+            </div>
+        </div>
+
+        <footer>
+            <p>© 2025 All rights reserved by colortab</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 统一懒加载处理（包括游戏主图和截图）
+            const lazyImages = document.querySelectorAll('.lazy-load');
+            
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.dataset.src;
+                        img.classList.add('loaded');
+                        observer.unobserve(img);
+                    }
+                });
+            }, {
+                rootMargin: '200px 0px', // 提前200px加载
+                threshold: 0.1
+            });
+            
+            lazyImages.forEach(img => {
+                imageObserver.observe(img);
+            });
+            
+            // 按钮波纹效果
+            const rippleButtons = document.querySelectorAll('.ripple-btn');
+            
+            rippleButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const x = e.clientX - e.target.getBoundingClientRect().left;
+                    const y = e.clientY - e.target.getBoundingClientRect().top;
+                    
+                    const ripple = document.createElement('span');
+                    ripple.classList.add('ripple');
+                    ripple.style.left = x + 'px';
+                    ripple.style.top = y + 'px';
+                    
+                    this.appendChild(ripple);
+                    
+                    setTimeout(() => {
+                        ripple.remove();
+                        window.location.href = this.href;
+                    }, 600);
+                });
+            });
+            
+            // 页面滚动导航栏效果
+            const header = document.querySelector('header');
+            let lastScrollTop = 0;
+            
+            window.addEventListener('scroll', function() {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                
+                if (scrollTop > 50) {
+                    header.style.padding = '10px 0';
+                    header.style.backgroundColor = 'rgba(26, 26, 46, 0.8)';
+                    header.style.backdropFilter = 'blur(10px)';
+                    header.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.2)';
+                } else {
+                    header.style.padding = '4px 0';
+                    header.style.backgroundColor = 'transparent';
+                    header.style.backdropFilter = 'none';
+                    header.style.boxShadow = 'none';
+                }
+                
+                lastScrollTop = scrollTop;
+            });
+            
+            // 卡片淡入动画
+            const gameCards = document.querySelectorAll('.game-card');
+            
+            const cardObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            gameCards.forEach(card => {
+                cardObserver.observe(card);
+            });
+        });
+    </script>
+</body>
+</html>

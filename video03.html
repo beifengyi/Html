@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gorgeous Ghost3 - VRComic film</title>
+    <style>
+        :root {
+            --primary-color: #907abd;
+            --secondary-color: #3a2252;
+            --bg-color: #1a1a2e;
+            --bg-gradient: linear-gradient(to bottom, #1a1a2e, #16213e);
+            --text-color: #b8b8b8;
+            --card-bg: rgba(30, 30, 46, 0.8);
+            --border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', 'SimHei', sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            background-image: var(--bg-gradient);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 0;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 30px;
+        }
+        
+        header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+            text-shadow: 0 0 12px rgba(160, 80, 120, 0.5);
+        }
+        
+        .video-container {
+            max-width: 900px;
+            margin: 0 auto 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        }
+        
+        video {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .section-title {
+            color: #c6bcd0;
+            font-size: 1.2rem;
+            margin-bottom: 25px;
+            text-align: center;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(233, 69, 96, 0.3);
+        }
+        
+        .images-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 20px 0;
+        }
+        
+        .image-card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid var(--border-color);
+        }
+        
+        .image-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+        }
+        
+        .image-title {
+            color: #c6bcd0;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .game-image {
+            width: 100%;
+            height: 200px;
+            background: #626466;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .game-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .poem-container {
+            background-color: #2c374d;
+            padding: 10px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 0 0 6px 6px;
+        }
+        
+        .poem-container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color), var(--primary-color));
+        }
+        
+        .poem-text {
+            color: #a782be;
+            font-size: 1.0rem;
+            line-height: 1.6;
+            text-align: center;
+            font-weight: 500;
+        }
+        
+        .action-buttons {
+            text-align: center;
+            margin-top: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .download-section {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s;
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+        
+        .download-button {
+            background: var(--primary-color);
+            min-width: 160px;
+        }
+        
+        .download-button:hover {
+            background: var(--secondary-color);
+            box-shadow: 0 0 15px rgba(144, 122, 189, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        .back-button {
+            background: #6c6280;
+            padding: 12px 30px;
+            font-size: 1.1rem;
+        }
+        
+        .back-button:hover {
+            background: var(--secondary-color);
+            box-shadow: 0 0 15px rgba(144, 122, 189, 0.5);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 25px 0;
+            border-top: 1px solid var(--border-color);
+            margin-top: 40px;
+            color: #8a8a8a;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 1024px) {
+            .images-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 20px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container { padding: 15px; }
+            header { padding: 25px 0; margin-bottom: 25px; }
+            header h1 { font-size: 1.8rem; }
+            .images-grid { grid-template-columns: 1fr; gap: 20px; }
+            .download-section { flex-direction: column; align-items: center; }
+            .download-button { width: 200px; }
+        }
+        
+        @media (max-width: 480px) {
+            header h1 { font-size: 1.6rem; }
+            .game-image { height: 160px; }
+            .download-button { min-width: 140px; padding: 10px 15px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Gorgeous Ghost3 - VRComic film</h1>
+            <p>Experience - Immersive "Strange Tales from a Chinese Studio"</p>
+        </header>
+        
+        <div class="video-container">
+            <video controls autoplay muted playsinline>
+                <source src="videos/game03.mp4" type="video/mp4">
+                Your browser does not support video playback
+            </video>
+        </div>
+        
+        <h2 class="section-title">VR comic film display</h2>
+        <div class="images-grid">
+            <div class="image-card">
+                <h4 class="image-title">Doom is inescapable</h4>
+                <div class="game-image">
+                    <img src="images/Nextimage/J3T01.jpg" alt="兰若寺场景">
+                </div>
+                <div class="poem-container">
+                    <div class="poem-text">A tiny heart can shine brightly; No thing in the boundless world can escape its sight.  </div>
+                </div>
+            </div>
+            
+            <div class="image-card">
+                <h4 class="image-title">Yaksa Monarch’s Disgrace</h4>
+                <div class="game-image">
+                    <img src="images/Nextimage/J3T03.jpg" alt="兰若寺场景2">
+                </div>
+                <div class="poem-container">
+                    <div class="poem-text">Its blade’s brilliance burns, soaring to the stars above; / Destroying monsters, vanquishing the forces of evil.</div>
+                </div>
+            </div>
+            
+            <div class="image-card">
+                <h4 class="image-title">Evil forces run amuck</h4>
+                <div class="game-image">
+                    <img src="images/Nextimage/J3T02.jpg" alt="兰若寺场景3">
+                </div>
+                <div class="poem-container">
+                    <div class="poem-text">Would that a rare sage appear, / Sword drawn, dispel the demon’s fear!</div>
+                </div>
+            </div>
+        </div>
+        
+      <div class="action-buttons">
+            <div class="download-section">
+                
+                <a href="Visonpro大发财" class="btn download-button">Vision Pro Download</a>
+                <a href="https://vr.meta.me/s/25qDqeVCdZ6x6TX" class="btn download-button">Meta Quest Download</a>
+                <a href="https://vr.meta.me/s/25qDqeVCdZ6x6TX" class="btn download-button">SteamVR Download</a>
+                <a href="Pico大发财" class="btn download-button">Pico Download</a>
+            </div>
+            <a href="index.html" class="btn back-button">Return Homepage</a>
+        </div>
+        
+        
+        <footer>
+            <p>© 2025 All rights reserved by colortab</p>
+        </footer>
+    </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const video = document.querySelector('video');
+        
+        // 尝试取消静音并播放
+        video.muted = false;
+        
+        // 用户交互后取消静音
+        document.addEventListener('click', function() {
+            if (video.muted) {
+                video.muted = false;
+            }
+        });
+    });
+    </script>
+</body>
+</html>
